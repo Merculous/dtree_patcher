@@ -3,6 +3,7 @@
 * gcc dtree_patcher.c -o dtree_patcher
 */
 
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,7 +40,7 @@ int no_effaceable_patch (FILE *fp,size_t dtree_len,void* dtree_buf) {
         return -1;
     }
     printf("Found use-lwvm string at %p\n",GET_OFFSET(dtree_len, lwvm_loc));
-    
+
     memcpy(lwvm_loc+0x24,lwvm_loc,ftell(fp)+0x4000);
 
     void* sacm_loc = memstr(dtree_buf, dtree_len, "\x73\x61\x63\x6D\x00\x00");
@@ -69,7 +70,7 @@ int no_effaceable_patch (FILE *fp,size_t dtree_len,void* dtree_buf) {
             break;
         }
     }
-    
+
     /* Insert no-effaceable-storage string */
     printf("Adding no-effaceable-storage string at %p\n",GET_OFFSET(dtree_len, lwvm_loc));
     strcpy(lwvm_loc,"no-effaceable-storage");
